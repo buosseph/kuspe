@@ -1,0 +1,10 @@
+{
+  "name": "kuspe",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "author": "Brian Uosseph <brian.uosseph@gmail.com>",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
