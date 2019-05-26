@@ -1,0 +1,21 @@
+langauge: node_js
+
+node_js:
+  - node
+  - 'lts/*'
+
+cache:
+  yarn: true
+
+branches:
+  only:
+    - develop
+    - /^release\/.*$/
+    - master
+
+env:
+  global:
+    - NODE_NEV="production"
+
+notifications:
+  email: false
