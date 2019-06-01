@@ -13,7 +13,7 @@ const isSuperset = <T = any>(set: Set<T>, subset: Set<T>): boolean => {
 };
 
 const intersection = <T = any>(setA: Set<T>, setB: Set<T>): Set<T> => {
-	const _intersection = new Set();
+	const _intersection = new Set<T>();
 	for (const item of setB) {
 		if (setA.has(item)) {
 			_intersection.add(item);
@@ -24,7 +24,7 @@ const intersection = <T = any>(setA: Set<T>, setB: Set<T>): Set<T> => {
 };
 
 const difference = <T = any>(setA: Set<T>, setB: Set<T>): Set<T> => {
-	const _difference = new Set(setA);
+	const _difference = new Set<T>(setA);
 	for (const item of setB) {
 		_difference.delete(item);
 	}
