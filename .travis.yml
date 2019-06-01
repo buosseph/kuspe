@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - node
-  - lts/latest
+  - "lts/*"
 env:
   global:
     - NODE_NEV="production"
