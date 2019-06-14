@@ -1,6 +1,6 @@
-import Extension from './Extension';
-import ExtensionRegistry from './ExtensionRegistry';
-import { robustTopologicalSort } from './dependencyResolution';
+import Extension from './extension';
+import ExtensionRegistry from './registry';
+import { robustTopologicalSort } from './sort';
 
 const isSuperset = <T = any>(set: Set<T>, subset: Set<T>): boolean => {
 	for (const item of subset) {

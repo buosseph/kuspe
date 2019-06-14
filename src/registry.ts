@@ -1,4 +1,4 @@
-import Extension from './Extension';
+import Extension from './extension';
 
 /** Tracks registered extensions */
 export class ExtensionRegistry<Ext extends Extension> {

@@ -1,4 +1,4 @@
-import { ExtensionManager } from '../ExtensionManager';
+import { ExtensionManager } from '../manager';
 
 describe('ExtensionManager', () => {
 	it('resolves multiple feature tags', () => {

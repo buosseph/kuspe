@@ -1,4 +1,4 @@
-import { tarjan, topologicalSort, robustTopologicalSort } from '../dependencyResolution';
+import { tarjan, topologicalSort, robustTopologicalSort } from '../sort';
 
 const VALID = new Map([
 	['foo', ['bar']],

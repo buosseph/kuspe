@@ -1,4 +1,4 @@
-import { ExtensionRegistry } from '../ExtensionRegistry';
+import { ExtensionRegistry } from '../registry';
 
 describe('ExtensionRegistry', () => {
 	it('yields extensions', () => {
