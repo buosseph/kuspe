@@ -1,18 +1,21 @@
-import Extension from './extension';
+/**
+ * Basic plugin architecture
+ *
+ * Objects registered as a plugin are provided in sequence of registration;
+ * order of registration determines the plugin sequence.
+ */
+export class PluginManager<Plugin extends Record<string, any>> {
+	protected registry: Plugin[] = [];
 
-/** Tracks registered extensions */
-export class ExtensionRegistry<Ext extends Extension> {
-	protected registry: Ext[] = [];
-
-	public register(extension: Ext) {
-		this.registry = [ ...this.registry, extension ];
+	public register(plugin: Plugin) {
+		this.registry = [ ...this.registry, plugin ];
 	}
 
 	public *[Symbol.iterator]() {
-		for (let extension of this.registry) {
-			yield extension;
+		for (let plugin of this.registry) {
+			yield plugin;
 		}
 	}
 }
 
-export default ExtensionRegistry;
+export default PluginManager;

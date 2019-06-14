@@ -1,3 +1,3 @@
 export { Extension } from './extension';
-export { ExtensionRegistry } from './registry';
+export { PluginManager } from './registry';
 export { ExtensionManager } from './manager';

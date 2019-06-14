@@ -1,5 +1,5 @@
 import Extension from './extension';
-import ExtensionRegistry from './registry';
+import Registry from './registry';
 import { robustTopologicalSort } from './sort';
 
 const isSuperset = <T = any>(set: Set<T>, subset: Set<T>): boolean => {
@@ -32,7 +32,7 @@ const difference = <T = any>(setA: Set<T>, setB: Set<T>): Set<T> => {
 };
 
 /**
- * Extension management based on configuration properties
+ * Advanced plugin architecture based on `Extension` configuration properties
  *
  * Extensions describe their dependencies using an expressive syntax:
  *
@@ -42,7 +42,7 @@ const difference = <T = any>(setA: Set<T>, setB: Set<T>): Set<T> => {
  * - `first` — declare that this extension is a dependency of all other non-first extensions
  * - `last` — declare that this extension depends on all other non-last extensions
  */
-export class ExtensionManager<Ext extends Extension> extends ExtensionRegistry<Ext> {
+export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 	public order(): Ext[] {
 		const extensions = this.registry;
 

@@ -1,8 +1,9 @@
-import { ExtensionRegistry } from '../registry';
+import { Extension } from '../extension';
+import { PluginManager } from '../registry';
 
-describe('ExtensionRegistry', () => {
+describe('PluginManager', () => {
 	it('yields extensions', () => {
-		const registry = new ExtensionRegistry();
+		const registry = new PluginManager<Extension>();
 		const common = { needs: [], excludes: [], uses: [], first: false, last: false };
 		const tags = [ 'a', 'b' ];
 
