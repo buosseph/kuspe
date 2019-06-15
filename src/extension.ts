@@ -1,8 +1,10 @@
+type Tag = string;
+
 export interface Extension {
 	/** `Extension`s with the following tags may be accessible */
-	uses: string[],
+	uses: Tag[],
 	/** `Extension`s with the following tags are requried for operation */
-	needs: string[],
+	needs: Tag[],
 
 	/** This `Extension` should be first, or one of the first, to execute */
 	first: boolean,
@@ -10,14 +12,14 @@ export interface Extension {
 	last: boolean,
 
 	/** Tags associated with this `Extension` to be recognized in `uses` and `needs` */
-	provides: string[],
+	provides: Tag[],
 
 	/**
 	 * `Extension`s with the following tags *must not* be set before this `Extension`
 	 *
 	 * Useful for enforcing an `Extension` to be a singleton.
 	 */
-	excludes: string[]
+	excludes: Tag[]
 }
 
 export default Extension;
