@@ -35,7 +35,7 @@ describe('tarjan', () => {
 	});
 
 	it('throws when a dependency is missing', () => {
-		expect(() => tarjan(MISSING)).toThrowError();
+		expect(() => tarjan(MISSING)).toThrowError('A dependency is missing: baz');
 	});
 });
 
@@ -63,7 +63,7 @@ describe('topologicalSort', () => {
 	});
 
 	it('throws when a dependency is missing', () => {
-		expect(() => topologicalSort(MISSING)).toThrowError();
+		expect(() => topologicalSort(MISSING)).toThrowError('A dependency is missing: baz');
 	});
 });
 
@@ -77,6 +77,6 @@ describe('robustTopologicalSort', () => {
 	});
 
 	it('throw when a dependency is missing', () => {
-		expect(() => robustTopologicalSort(MISSING)).toThrowError();
+		expect(() => robustTopologicalSort(MISSING)).toThrowError('A dependency is missing: baz');
 	});
 });
