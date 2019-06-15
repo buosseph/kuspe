@@ -51,10 +51,16 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 		const provided = new Set<string>();
 		const needed = new Set<string>();
 
-		extensions.forEach(extension => {
-			extension.provides.forEach(tag => provided.add(tag));
-			extension.needs.forEach(tag => needed.add(tag));
-		});
+		for (const extension of extensions) {
+			for (const tag of extension.provides) {
+				provided.add(tag);
+			}
+
+			for (const tag of extension.needs) {
+				needed.add(tag);
+			}
+		}
+
 
 		// Check if all features needed are provided by confirming provided is a superset of needed
 		if (!isSuperset(provided, needed)) {
@@ -68,17 +74,17 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 		let provides: { [feature: string]: Ext } = {};
 		let excludes: { [feature: string]: Ext[] } = {};
 
-		extensions.forEach(extension => {
+		for (const extension of extensions) {
 			// Identify all provided features by the extension
-			extension.provides.forEach(feature => {
+			for (const feature of extension.provides) {
 				provides = { ...provides, [feature]: extension };
-			});
+			}
 
 			// Identify all features that must be excluded in the extension
-			extension.excludes.forEach(feature => {
+			for (const feature of extension.excludes) {
 				const knownExclusion = excludes[feature] || [];
 				excludes = { ...excludes, [feature]: [ ...knownExclusion, extension ] };
-			});
+			}
 
 			if (extension.first) {
 				universal = [ ...universal, extension ];
@@ -86,49 +92,54 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 			else if (extension.last) {
 				inverse = [ ...inverse, extension ];
 			}
-		});
+		}
 
 		// Verify there are no conflicts by confirming provides and excludes share no items
 		const providedFeatureSet = new Set<string>();
 		const excludedFeatureSet = new Set<string>();
 
-		Object.keys(provides).forEach(key => providedFeatureSet.add(key));
-		Object.keys(excludes).forEach(key => excludedFeatureSet.add(key));
+		for (const key of Object.keys(provides)) { providedFeatureSet.add(key); }
+		for (const key of Object.keys(excludes)) { excludedFeatureSet.add(key); }
 
-		intersection(providedFeatureSet, excludedFeatureSet).forEach(conflict => {
-			throw new Error(`${excludes[conflict]} requires that the ${conflict} feature to not exist, but is defined by ${provides[conflict]}`);
-		});
+		for (const conflict of intersection(providedFeatureSet, excludedFeatureSet)) {
+			throw new Error(`${JSON.stringify(excludes[conflict])} requires that the ${conflict} feature to not exist, but is defined by ${JSON.stringify(provides[conflict])}`);
+		}
 
 		// Build initial graph
 		let dependencies: Map<string, string[]> = new Map();
-
-		extensions.forEach(extension => {
-			// Get the requrie features from the needs and uses attributes
+		for (const extension of extensions) {
+			// Get the required features from the needs and uses attributes
 
 			const requirements = new Set<string>();
-			extension.needs.forEach(feature => requirements.add(feature));
+			for (const feature of extension.needs) {
+				requirements.add(feature);
+			}
 
 			const used = new Set<string>();
-			extension.uses.forEach(feature => used.add(feature));
+			for (const feature of extension.uses) {
+				used.add(feature);
+			}
 
 			const additionalRequirements = intersection(used, provided);
-			additionalRequirements.forEach(requirement => requirements.add(requirement));
+			for (const requirement of additionalRequirements) {
+				requirements.add(requirement);
+			}
 
 			const extensionDependencies = new Set<string>();
-			requirements.forEach(requirement => {
+			for (const requirement of requirements) {
 				extensionDependencies.add(provides[requirement].provides[0]);
-			});
+			}
 
 			dependencies.set(extension.provides[0], Array.from(extensionDependencies));
 
 			if (universal.length > 0 && !universal.find(ext => ext === extension)) {
-				universal.forEach(ext => {
+				for (const ext of universal) {
 					const knownDependencies = dependencies.get(extension.provides[0]);
 					const updatedDependencies = knownDependencies
 						? [ ...knownDependencies, ext.provides[0] ]
 						: [ ext.provides[0] ];
 					dependencies.set(extension.provides[0], updatedDependencies);
-				});
+				}
 			}
 
 			if (inverse.length > 0 && inverse.find(ext => ext === extension)) {
@@ -139,26 +150,26 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 
 				if (knownDependencies) {
 					updatedDependencies = Array.from(knownDependencies);
-					inverseDependencies.forEach(ext => {
+					for (const ext of inverseDependencies) {
 						updatedDependencies.push(ext.provides[0]);
-					});
+					}
 				}
 				else {
 					updatedDependencies = [];
-					inverseDependencies.forEach(ext => {
+					for (const ext of inverseDependencies) {
 						updatedDependencies.push(ext.provides[0]);
-					});
+					}
 				}
 
 				dependencies.set(extension.provides[0], updatedDependencies);
 			}
-		});
+		}
 
 		const orderedDependencies: string[][] = robustTopologicalSort(dependencies);
 
 		// Identify cycles and collect extensions for result
 		let result: Ext[] = [];
-		orderedDependencies.forEach(ext => {
+		for (const ext of orderedDependencies) {
 			if (ext.length > 1) { // If tuple found, then circular dependency
 				throw new Error(`Circular dependency found: ${ext}`);
 			}
@@ -171,7 +182,7 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 			}
 
 			result.push(found);
-		});
+		}
 
 		return result.reverse();
 	}
