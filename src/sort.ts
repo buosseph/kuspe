@@ -26,7 +26,7 @@ export const tarjan = (graph: Graph): SCC[] => {
 			throw new Error(`A dependency is missing: ${node}`);
 		}
 
-		successors.forEach(successor => {
+		for (const successor of successors) {
 			if (lowlink[successor] === undefined) {
 				strongConnect(successor);
 				lowlink[node] = Math.min(lowlink[node], lowlink[successor]);
@@ -34,7 +34,7 @@ export const tarjan = (graph: Graph): SCC[] => {
 			else if (stack.find(node => node === successor)) {
 				lowlink[node] = Math.min(lowlink[node], index[successor]);
 			}
-		});
+		}
 
 		if (lowlink[node] === index[node]) {
 			const connectedComponent: SCC = [];
@@ -52,12 +52,11 @@ export const tarjan = (graph: Graph): SCC[] => {
 		}
 	};
 
-	// NOTE: Changing tsconfig *should* allow use of graph.keys() iterator
-	graph.forEach((_successors: Node[], node: Node) => {
+	for (const node of graph.keys()) {
 		if (lowlink[node] === undefined) {
 			strongConnect(node);
 		}
-	});
+	}
 
 	return result;
 };
@@ -66,22 +65,20 @@ export const topologicalSort = (graph: Map<any, any[]>): any[] => {
 	// If count for a given node is not found, then it is 0 (use as the default value)
 	const count = new Map<any, number>();
 
-	// NOTE: Changing tsconfig *should* allow use of graph.keys() iterator
-	graph.forEach((successors = []) => {
-		successors.forEach(successor => {
+	for (const successors of graph.values()) {
+		for (const successor of successors) {
 			count.set(successor, ((count.get(successor) || 0) + 1));
-		});
-	});
+		}
+	}
 
 	let result: Node[] = [];
 
 	let ready: Node[] = [];
-	// NOTE: Changing tsconfig *should* allow use of graph.keys() iterator
-	graph.forEach((_successors = [], node) => {
+	for (const node of graph.keys()) {
 		if ((count.get(node) || 0) === 0) {
 			ready.push(node);
 		}
-	});
+	}
 
 	while (ready.length > 0) {
 		const node = ready.pop();
@@ -95,13 +92,13 @@ export const topologicalSort = (graph: Map<any, any[]>): any[] => {
 			throw new Error(`A dependency is missing: ${node}`);
 		}
 
-		successors.forEach(successor => {
+		for (const successor of successors) {
 			count.set(successor, (count.get(successor) || 0) - 1);
 
 			if ((count.get(successor) || 0) === 0) {
 				ready.push(successor);
 			}
-		});
+		}
 	}
 
 	return result;
@@ -112,28 +109,27 @@ export const robustTopologicalSort = (graph: Graph): Node[][] => {
 	const components: SCC[] = tarjan(graph);
 
 	let nodeComponent: { [node: string]: SCC } = {};
-	components.forEach((component: SCC) => {
-		component.forEach((node: Node) => {
+	for (const component of components) {
+		for (const node of component) {
 			nodeComponent[node] = component;
-		});
-	});
+		}
+	}
 
 	let componentGraph: Map<string[], string[][]> = new Map();
-	components.forEach((component: SCC) => {
+	for (const component of components) {
 		componentGraph.set(component, []);
-	});
+	}
 
-	// NOTE: Changing tsconfig *should* allow use of graph.keys() iterator
-	graph.forEach((successors = [], node: Node) => {
+	for (const [ node, successors = [] ] of graph) {
 		const nodeC: SCC = nodeComponent[node];
-		successors.forEach((successor: Node) => {
+		for (const successor of successors) {
 			const successorC: SCC = nodeComponent[successor];
 			if (nodeC !== successorC) {
 				const newValue: SCC[] = [ ...(componentGraph.get(nodeC) || []), successorC ];
 				componentGraph.set(nodeC, newValue);
 			}
-		});
-	});
+		}
+	}
 
 	return topologicalSort(componentGraph);
 };
