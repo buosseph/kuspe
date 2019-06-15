@@ -1,9 +1,18 @@
+import Extension from '../extension';
 import { ExtensionManager } from '../manager';
+
+const common: Extension = {
+	provides: [],
+	needs: [],
+	uses: [],
+	excludes: [],
+	first: false,
+	last: false
+};
 
 describe('ExtensionManager', () => {
 	it('resolves multiple feature tags', () => {
 		const manager = new ExtensionManager();
-		const common = { excludes: [], needs: [], uses: [], first: false, last: false };
 
 		manager.register({ ...common, provides: ['a'], needs: ['foo'] });
 		manager.register({ ...common, provides: ['b', 'foo'] });
@@ -15,7 +24,6 @@ describe('ExtensionManager', () => {
 
 	it('orders extensions as first', () => {
 		const manager = new ExtensionManager();
-		const common = { excludes: [], needs: [], uses: [], first: false, last: false };
 
 		manager.register({ ...common, provides: ['a'] });
 		manager.register({ ...common, provides: ['b'], first: true });
@@ -25,7 +33,6 @@ describe('ExtensionManager', () => {
 
 	it('orders extensions as last', () => {
 		const manager = new ExtensionManager();
-		const common = { excludes: [], needs: [], uses: [], first: false, last: false };
 
 		manager.register({ ...common, provides: ['a'], last: true });
 		manager.register({ ...common, provides: ['b'] });
@@ -35,37 +42,31 @@ describe('ExtensionManager', () => {
 
 	it('throws if extension is missing dependency', () => {
 		const manager = new ExtensionManager();
-		const ext = {
-			provides: ['b'],
-			uses: [],
-			needs: ['a'],
-			excludes: [],
-			first: false,
-			last: false
-		};
 
+		const ext = { ...common,  provides: ['b'], needs: ['a'] };
 		manager.register(ext);
 
-		expect(() => manager.order()).toThrowError();
+		expect(() => manager.order())
+			.toThrowError('Extensions providing the following features must be configured:\na');
 	});
 
 	it('throws if exclusion is found', () => {
 		const manager = new ExtensionManager();
-		const common = { excludes: [], needs: [], uses: [], first: false, last: false };
 
+		const excludingExt = { ...common, provides: ['b'], excludes: ['a'] };
 		manager.register({ ...common, provides: ['a'] });
-		manager.register({ ...common, provides: ['b'], excludes: ['a'] });
+		manager.register(excludingExt);
 
-		expect(() => manager.order()).toThrowError();
+		expect(() => manager.order())
+			.toThrowError(`${JSON.stringify([excludingExt])} requires that the a feature to not exist, but is defined by ${JSON.stringify([excludingExt])}`);
 	});
 
 	it('throws if circular dependency is found', () => {
 		const manager = new ExtensionManager();
-		const common = { excludes: [], uses: [], first: false, last: false };
 
 		manager.register({ ...common, provides: ['a'], needs: ['b'] });
 		manager.register({ ...common, provides: ['b'], needs: ['a'] });
 
-		expect(() => manager.order()).toThrowError();
+		expect(() => manager.order()).toThrowError('Circular dependency found: b,a');
 	});
 });
