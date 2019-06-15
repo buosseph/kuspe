@@ -53,12 +53,14 @@ describe('ExtensionManager', () => {
 	it('throws if exclusion is found', () => {
 		const manager = new ExtensionManager();
 
-		const excludingExt = { ...common, provides: ['b'], excludes: ['a'] };
-		manager.register({ ...common, provides: ['a'] });
-		manager.register(excludingExt);
+		const excluding = { ...common, provides: ['b'], excludes: ['a'] };
+		const excluded = { ...common, provides: ['a'] };
+
+		manager.register(excluded);
+		manager.register(excluding);
 
 		expect(() => manager.order())
-			.toThrowError(`${JSON.stringify([excludingExt])} requires that the a feature to not exist, but is defined by ${JSON.stringify([excludingExt])}`);
+			.toThrowError(`${JSON.stringify([excluding])} requires that the a feature to not exist, but is defined by ${JSON.stringify(excluded)}`);
 	});
 
 	it('throws if circular dependency is found', () => {
