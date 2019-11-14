@@ -10,20 +10,20 @@
 		"clean-tests": "del coverage",
 		"clean": "yarn clean-lib && yarn clean-tests && del node_modules",
 		"prepare": "tsc -b",
-		"lint": "eslint src/**/*.ts",
+		"lint": "eslint --ext .ts .",
 		"test": "jest --coverage"
 	},
 	"devDependencies": {
 		"@types/jest": "^24.0",
-		"@typescript-eslint/eslint-plugin": "^1.9",
-		"@typescript-eslint/parser": "^1.9",
-		"del-cli": "^2.0",
-		"eslint": "^5.16",
-		"husky": "^2.3",
+		"@typescript-eslint/eslint-plugin": "^2.7",
+		"@typescript-eslint/parser": "^2.7",
+		"del-cli": "^3.0",
+		"eslint": "^6.6",
+		"husky": "^3.0",
 		"jest": "^24.8",
-		"lint-staged": "^8.1",
-		"ts-jest": "^24.0",
-		"typescript": "^3.5"
+		"lint-staged": "^9.4",
+		"ts-jest": "^24.1",
+		"typescript": "^3.7"
 	},
 	"jest": {
 		"preset": "ts-jest",
@@ -35,11 +35,9 @@
 		}
 	},
 	"lint-staged": {
-		"linters": {
-			"*.ts": [
-				"eslint --fix",
-				"git add"
-			]
-		}
+		"*.ts": [
+			"eslint --fix",
+			"git add"
+		]
 	}
 }
