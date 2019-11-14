@@ -10,7 +10,7 @@
 		"clean-tests": "del coverage",
 		"clean": "yarn clean-lib && yarn clean-tests && del node_modules",
 		"prepare": "tsc -b",
-		"lint": "eslint --ext .ts .",
+		"lint": "eslint --ext .ts __tests__ src",
 		"test": "jest --coverage"
 	},
 	"devDependencies": {

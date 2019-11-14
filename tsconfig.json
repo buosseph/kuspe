@@ -20,13 +20,6 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": [
-		"src"
-	],
-	"exclude": [
-		"__tests__",
-		"node_modules",
-		"lib",
-		"src/**/__tests__"
-	]
+	"include": ["src"],
+	"exclude": ["src/**/__tests__"]
 }
