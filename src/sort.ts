@@ -9,10 +9,10 @@ type SCC = StronglyConnectedComponent;
  */
 export const tarjan = (graph: Graph): SCC[] => {
 	let indexCounter = 0;
-	let lowlink: { [node: string]: number } = {};
-	let index: { [node: string]: number } = {};
-	let stack: Node[] = [];
-	let result: SCC[] = [];
+	const lowlink: { [node: string]: number } = {};
+	const index: { [node: string]: number } = {};
+	const stack: Node[] = [];
+	const result: SCC[] = [];
 
 	const strongConnect = (node: Node) => {
 		index[node] = indexCounter;
@@ -71,9 +71,9 @@ export const topologicalSort = (graph: Map<any, any[]>): any[] => {
 		}
 	}
 
-	let result: Node[] = [];
+	const result: Node[] = [];
 
-	let ready: Node[] = [];
+	const ready: Node[] = [];
 	for (const node of graph.keys()) {
 		if ((count.get(node) || 0) === 0) {
 			ready.push(node);
@@ -108,14 +108,14 @@ export const topologicalSort = (graph: Map<any, any[]>): any[] => {
 export const robustTopologicalSort = (graph: Graph): Node[][] => {
 	const components: SCC[] = tarjan(graph);
 
-	let nodeComponent: { [node: string]: SCC } = {};
+	const nodeComponent: { [node: string]: SCC } = {};
 	for (const component of components) {
 		for (const node of component) {
 			nodeComponent[node] = component;
 		}
 	}
 
-	let componentGraph: Map<string[], string[][]> = new Map();
+	const componentGraph: Map<string[], string[][]> = new Map();
 	for (const component of components) {
 		componentGraph.set(component, []);
 	}

@@ -1,6 +1,6 @@
-type Tag = string;
+export type Tag = string;
 
-export interface Extension {
+export type Extension = {
 	/** `Extension`s with the following tags may be accessible */
 	uses: Tag[],
 	/** `Extension`s with the following tags are requried for operation */
@@ -20,6 +20,6 @@ export interface Extension {
 	 * Useful for enforcing an `Extension` to be a singleton.
 	 */
 	excludes: Tag[]
-}
+};
 
 export default Extension;

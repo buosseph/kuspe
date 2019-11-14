@@ -106,7 +106,7 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 		}
 
 		// Build initial graph
-		let dependencies: Map<string, string[]> = new Map();
+		const dependencies: Map<string, string[]> = new Map();
 		for (const extension of extensions) {
 			// Get the required features from the needs and uses attributes
 
@@ -168,7 +168,7 @@ export class ExtensionManager<Ext extends Extension> extends Registry<Ext> {
 		const orderedDependencies: string[][] = robustTopologicalSort(dependencies);
 
 		// Identify cycles and collect extensions for result
-		let result: Ext[] = [];
+		const result: Ext[] = [];
 		for (const ext of orderedDependencies) {
 			if (ext.length > 1) { // If tuple found, then circular dependency
 				throw new Error(`Circular dependency found: ${ext}`);

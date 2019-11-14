@@ -12,7 +12,7 @@ export class PluginManager<Plugin extends Record<string, any>> {
 	}
 
 	public *[Symbol.iterator]() {
-		for (let plugin of this.registry) {
+		for (const plugin of this.registry) {
 			yield plugin;
 		}
 	}
