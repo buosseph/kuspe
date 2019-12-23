@@ -41,7 +41,7 @@ export const tarjan = (graph: Graph): SCC[] => {
 
 			while (stack.length > 0) {
 				const successor = stack.pop();
-				if (!successor) { throw new Error('Tarjan stack missing expected node'); }
+				if (!successor) { throw new Error("Tarjan stack missing expected node"); }
 
 				connectedComponent.push(successor);
 

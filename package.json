@@ -6,7 +6,7 @@
 	"author": "Brian Uosseph <brian.uosseph@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"clean-lib": "del lib",
+		"clean-lib": "tsc -b --clean",
 		"clean-tests": "del coverage",
 		"clean": "yarn clean-lib && yarn clean-tests && del node_modules",
 		"prepare": "tsc -b",

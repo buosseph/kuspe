@@ -1,3 +1,2 @@
-export { Extension, Tag } from './extension';
-export { PluginManager } from './registry';
-export { ExtensionManager } from './manager';
+export { default as pluginManager } from "./plugins";
+export { default as extensionManager, Extension, ExtensionTag } from "./extensions";

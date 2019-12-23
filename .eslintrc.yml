@@ -16,7 +16,7 @@ rules:
   quotes: off
   '@typescript-eslint/quotes':
     - warn
-    - single
+    - double
   semi: off
   '@typescript-eslint/semi':
     - warn
