@@ -14,12 +14,12 @@ kuspe is a ES2015, or ES6, package and requires the running environment to suppo
 
 ## Usage
 
-kuspe uses [Tarjan's algorithm](https://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm) to provide an array of extensions sorted by dependency order through the `ExtensionManager`.
+kuspe uses [Tarjan's algorithm](https://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm) and topological sorting to provide an array of extensions sorted by dependency order.
 
 ```ts
-import { Extension, ExtensionManager } from "kuspe";
+import { Extension, extensionManager } from "kuspe";
 
-// Add your own properties for your extensions
+// Add your own properties for your extension type
 type AppExtension = Extension;
 
 const a: AppExtension = {
@@ -40,7 +40,7 @@ const b: AppExtension = {
 	last: false
 };
 
-const extensions: ExtensionManager<AppExtension> = new ExtensionManager();
+const extensions = extensionManager<AppExtension>();
 
 extensions.register(b);
 extensions.register(a);
@@ -49,12 +49,15 @@ extensions.register(a);
 console.log(extensions.order()); // [a, b]
 ```
 
-kuspe also provides a `PluginManager` which returns an array of plugins in order of registration; no dependency resolution is included and any object may be used.
+kuspe also provides a plugin manager which returns an array of plugins in order of registration; no dependency resolution is included and any object may be used.
 
 ```ts
-import { PluginManager } from "kuspe";
+import { Plugin, pluginManager } from "kuspe";
 
-const plugins: PluginManager = new PluginManager();
+// You can define your own plugin type, if desired
+type AppPlugin = Plugin;
+
+const plugins = pluginManager<AppPlugin>();
 
 const a = { name: "a" };
 const b = { name: "b" };
