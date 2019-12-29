@@ -1,6 +1,6 @@
 import plugins from "../plugins";
 
-test.only("registers", () => {
+test("registers", () => {
 	const manager = plugins();
 	manager.register({ name: "foo" });
 	manager.register({ name: "bar" });
@@ -10,19 +10,4 @@ test.only("registers", () => {
 		.toEqual([
 			{ name: "foo" },
 			{ name: "bar" }]);
-});
-
-test("yields plugins", () => {
-	const manager = plugins();
-	const common = { needs: [], excludes: [], uses: [], first: false, last: false };
-	const tags = ["a", "b"];
-
-	tags.forEach(tag =>
-		manager.register({ ...common, provides: [tag] }));
-
-	let i = 0;
-	for (const PLUGIN of manager) {
-		expect(PLUGIN.provides[0]).toEqual(tags[i]);
-		i += 1;
-	}
 });
