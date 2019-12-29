@@ -2,29 +2,29 @@
  * @module
  * Extension architecture
  */
-import plugins, { PluginManager } from "./plugins";
+import plugins, { Plugin, PluginManager } from "./plugins";
 import { robustTopologicalSort } from "./sort";
 
 export type ExtensionTag = string;
 
-export type Extension = {
-	/** `Extension`s with the following tags may be accessible */
+export type Extension = Plugin & {
+	/** Extensions with the following tags may be accessible */
 	uses: ExtensionTag[],
-	/** `Extension`s with the following tags are requried for operation */
+	/** Extensions with the following tags are requried for operation */
 	needs: ExtensionTag[],
 
-	/** This `Extension` should be first, or one of the first, to execute */
+	/** This extension should be first, or one of the first, to execute */
 	first: boolean,
-	/** This `Extension` should be last, or one of the last, to execute */
+	/** This extension should be last, or one of the last, to execute */
 	last: boolean,
 
-	/** Tags associated with this `Extension` to be recognized in `uses` and `needs` */
+	/** Tags associated with this extension to be recognized in `uses` and `needs` */
 	provides: ExtensionTag[],
 
 	/**
-	 * `Extension`s with the following tags *must not* be set before this `Extension`
+	 * Extensions with the following tags *must not* be set before this extension
 	 *
-	 * Useful for enforcing an `Extension` to be a singleton.
+	 * Useful for enforcing an extension to be a singleton.
 	 */
 	excludes: ExtensionTag[]
 };

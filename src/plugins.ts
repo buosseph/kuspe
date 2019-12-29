@@ -3,8 +3,7 @@ export type Plugin = Record<any, any>;
 
 export type PluginManager<P extends Plugin = Plugin> = {
 	registry: Array<P>,
-	register: (...plugins: P[])=> void,
-	[Symbol.iterator](): IterableIterator<P>
+	register: (...plugins: P[])=> void
 };
 
 /**
@@ -16,11 +15,7 @@ export type PluginManager<P extends Plugin = Plugin> = {
 const manager = <P extends Plugin = Plugin>(): PluginManager<P> => {
 	const registry: P[] = [];
 	const register = (...plugins: P[]) => { registry.push(...plugins); };
-	return {
-		registry,
-		register,
-		[Symbol.iterator]: registry[Symbol.iterator]
-	};
+	return { registry, register };
 };
 
 export default manager;
