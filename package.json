@@ -5,6 +5,12 @@
 	"types": "lib/index.d.ts",
 	"author": "Brian Uosseph <brian.uosseph@gmail.com>",
 	"license": "MIT",
+	"keywords": [
+		"plugins",
+		"extensions",
+		"dependencies",
+		"dependency resolution"
+	],
 	"scripts": {
 		"clean-lib": "tsc -b --clean",
 		"clean-tests": "del coverage",
